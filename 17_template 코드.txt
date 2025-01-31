@@ -1,0 +1,325 @@
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    opacity:0.99;
+    z-index: 100; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+</style>
+
+<!-- Trigger/Open The Modal -->
+<md-button onClick='nockanda_open()'>입력하기!</md-button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>스케쥴입력기!</h2>
+    </div>
+    <div class="modal-body">
+
+      <div id=result></div>
+
+      <table border=1>
+        <tr>
+      <td><md-button ng-click="sendMsg()">입력하기!</md-button></td>
+      <td><md-button onClick='nclear()'>새로쓰기!</md-button></td>
+      <td><md-button onClick='nclose()'>닫기!</md-button></td>
+        </tr></table>
+
+
+      <table border=1>
+          <tr><td>디바이스번호</td><td>채널번호</td></tr>
+          <tr height=30>
+             <td><div id=input1></div></td>
+            <td><div id=input2></div></td>
+          </tr>
+          <tr><td>시작시간(H.)</td><td>시작시간(M.)</td></tr>
+          <tr height=30>
+             <td><div id=input3></div></td>
+            <td><div id=input4></div></td>
+          </tr>
+          <tr><td>종료시간(H.)</td><td>종료시간(M.)</td></tr>
+          <tr height=30>
+             <td><div id=input5></div></td>
+            <td><div id=input6></div></td>
+          </tr>
+      </table>
+
+      <table border=1>
+          <tr>
+              <td><md-button onClick='number_input(0)'  style="width: 50px; height:50px;"/>0</md-button></td>
+              <td><md-button onClick='number_input(1)' style="width: 50px; height:50px;"/>1</md-button></td>
+              <td><md-button onClick='number_input(2)' style="width: 50px; height:50px;"/>2</md-button></td>
+              <td><md-button onClick='number_input(3)' style="width: 50px; height:50px;"/>3</md-button></td>
+              <td><md-button onClick='number_input(4)' style="width: 50px; height:50px;"/>4</md-button></td>
+          </tr>
+          <tr>
+              <td><md-button onClick='number_input(5)' style="width: 50px; height:50px;"/>5</md-button></td>
+              <td><md-button onClick='number_input(6)' style="width: 50px; height:50px;"/>6</md-button></td>
+              <td><md-button onClick='number_input(7)' style="width: 50px; height:50px;"/>7</md-button></td>
+              <td><md-button onClick='number_input(8)' style="width: 50px; height:50px;"/>8</md-button></td>
+              <td><md-button onClick='number_input(9)' style="width: 50px; height:50px;"/>9</md-button></td>
+          </tr>
+      </table>    
+
+      <table border=1>
+         <tr>
+             <td>월</td>
+             <td>화</td>
+             <td>수</td>
+             <td>목</td>
+             <td>금</td>
+             <td>토</td>
+             <td>일</td>
+         </tr>
+         <tr>
+             <td><input type=checkbox id=check1 style="zoom:2.0;" checked></td>
+             <td><input type=checkbox id=check2 style="zoom:2.0;" checked></td>
+             <td><input type=checkbox id=check3 style="zoom:2.0;" checked></td>
+             <td><input type=checkbox id=check4 style="zoom:2.0;" checked></td>
+             <td><input type=checkbox id=check5 style="zoom:2.0;" checked></td>
+             <td><input type=checkbox id=check6 style="zoom:2.0;" checked></td>
+             <td><input type=checkbox id=check7 style="zoom:2.0;" checked></td>
+         </tr>
+      </table>
+
+</div>
+
+
+
+
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+    // Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+//var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal 
+//btn.onclick = function() {
+//    nclear();
+//    modal.style.display = "block";
+//}
+
+function nockanda_open(){
+    nclear();
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+var input_index = 0;
+
+function number_input(num){
+    if(input_index == 0){
+             //디바이스번호쪽부터 채워나간다
+    	document.getElementById('input1').innerText += num;
+             if(document.getElementById('input1').innerText.length >= 4){
+                input_index++;
+             }
+    }else if(input_index == 1){
+    	document.getElementById('input2').innerText += num;
+             if(document.getElementById('input2').innerText.length >= 3){
+                input_index++;
+             }
+    }else if(input_index == 2){
+    	document.getElementById('input3').innerText += num;
+             if(document.getElementById('input3').innerText.length >= 2){
+                input_index++;
+             }
+    }else if(input_index == 3){
+    	document.getElementById('input4').innerText += num;
+             if(document.getElementById('input4').innerText.length >= 2){
+                input_index++;
+             }
+    }else if(input_index == 4){
+    	document.getElementById('input5').innerText += num;
+             if(document.getElementById('input5').innerText.length >= 2){
+                input_index++;
+             }
+    }else if(input_index == 5){
+    	document.getElementById('input6').innerText += num;
+             if(document.getElementById('input6').innerText.length >= 2){
+                input_index=0;
+             }
+    }
+}
+
+function nclear(){
+   input_index=0;
+   document.getElementById('input1').innerText = "";
+   document.getElementById('input2').innerText = "";
+   document.getElementById('input3').innerText = "";
+   document.getElementById('input4').innerText = "";
+   document.getElementById('input5').innerText = "";
+   document.getElementById('input6').innerText = "";
+   document.getElementById('check1').checked = true;
+   document.getElementById('check2').checked = true;
+   document.getElementById('check3').checked = true;
+   document.getElementById('check4').checked = true;
+   document.getElementById('check5').checked = true;
+   document.getElementById('check6').checked = true;
+   document.getElementById('check7').checked = true;
+}
+function nclose(){
+   modal.style.display = "none";
+}
+
+ (function(scope) {
+scope.sendMsg = function() {
+
+    //약간의 예외처리!
+    if(document.getElementById('input1').innerText.length != 4){
+       //디바이스번호가 4자리가 아닌경우!
+       document.getElementById('result').innerText = "디바이스 번호가 반드시 4자리여야 합니다!";
+       return;
+    }
+    if(document.getElementById('input2').innerText.length != 3){
+       document.getElementById('result').innerText = "채널번호는 3자리로 입력해야합니다!";
+       return;
+    }
+    if(document.getElementById('input3').innerText.length != 2){
+       document.getElementById('result').innerText = "시간은 hh형태로 입력하십시요!";
+       return;
+    }
+    if(document.getElementById('input3').innerText > 23){
+       document.getElementById('result').innerText = "입력가능한시간은 0~23입니다!";
+       return;
+    }
+    if(document.getElementById('input4').innerText.length != 2){
+       document.getElementById('result').innerText = "분은 mm형태로 입력하십시요!";
+       return;
+    }
+    if(document.getElementById('input4').innerText > 59){
+       document.getElementById('result').innerText = "입력가능한 분은 0~59입니다!";
+       return;
+    }
+    if(document.getElementById('input5').innerText.length != 2){
+       document.getElementById('result').innerText = "시간은 hh형태로 입력하십시요!";
+       return;
+    }
+    if(document.getElementById('input5').innerText > 23){
+       document.getElementById('result').innerText = "입력가능한시간은 0~23입니다!";
+       return;
+    }
+    if(document.getElementById('input6').innerText.length != 2){
+       document.getElementById('result').innerText = "분은 mm형태로 입력하십시요!";
+       return;
+    }
+    if(document.getElementById('input6').innerText > 59){
+       document.getElementById('result').innerText = "입력가능한 분은 0~59입니다!";
+       return;
+    }
+    scope.dnum = document.getElementById('input1').innerText;
+    scope.ch = document.getElementById('input2').innerText;
+    scope.s1 = document.getElementById('input3').innerText;
+    scope.s2 = document.getElementById('input4').innerText;
+    scope.e1 = document.getElementById('input5').innerText;
+    scope.e2 = document.getElementById('input6').innerText;
+    scope.d1 = document.getElementById('check1').checked;
+    scope.d2 = document.getElementById('check2').checked;
+    scope.d3 = document.getElementById('check3').checked;
+    scope.d4 = document.getElementById('check4').checked;
+    scope.d5 = document.getElementById('check5').checked;
+    scope.d6 = document.getElementById('check6').checked;
+    scope.d7 = document.getElementById('check7').checked;
+
+   
+
+    scope.send({ payload: {dnum:scope.dnum,ch:scope.ch,s1:scope.s1,s2:scope.s2,e1:scope.e1,e2:scope.e2,d1:scope.d1,d2:scope.d2,d3:scope.d3,d4:scope.d4,d5:scope.d5,d6:scope.d6,d7:scope.d7}})
+
+    modal.style.display = "none";
+}
+
+})(scope);
+
+</script>

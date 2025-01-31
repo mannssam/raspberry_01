@@ -1,0 +1,5 @@
+msg.payload={
+    command:"clearData",
+    arguments: []
+}
+return msg;

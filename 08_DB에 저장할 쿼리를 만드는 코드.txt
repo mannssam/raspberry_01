@@ -1,0 +1,3 @@
+var mytime = new Date();
+msg.topic = "insert into nodered(dnum,ch,state,mytime) values('"+msg.payload.dnum*1+"','"+msg.payload.ch*1+"',"+msg.payload.state+",'"+mytime+"')";
+return msg;

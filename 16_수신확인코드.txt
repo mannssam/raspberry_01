@@ -1,0 +1,48 @@
+//전역변수의 값을 가지고온다
+var nockanda_data = global.get("nockanda_data");
+
+if(nockanda_data == null || nockanda_data.length == 0){
+   //데이터가 없는경우
+   //여기서부터 아래쪽은 실행하지 않고 종료한다!
+   return null;
+}
+
+//msg.payload.id
+//msg.payload.state
+//전역변수 업데이트
+for(var i = 0;i<nockanda_data.length;i++){
+   if(nockanda_data[i].id == msg.payload.id){
+     if(msg.payload.state == 0){
+        //OFF
+        nockanda_data[i].OFFSTATE = 2;
+     }else if(msg.payload.state == 1){
+        //ON
+        nockanda_data[i].ONSTATE = 2;
+     }
+     break;
+   }
+}
+
+//테이블 업데이트
+   var update = {};
+update.command = "updateOrAddData";
+update.arguments = [];
+var argu = [];
+
+     var mydata = {};
+     mydata.id = msg.payload.id;
+
+     if(msg.payload.state == 0){
+        //OFF
+        mydata.OFFSTATE = 2;
+     }else if(msg.payload.state == 1){
+        //ON
+        mydata.ONSTATE = 2;
+     }
+     
+     
+     argu.push(mydata);
+update.arguments.push(argu);
+msg.payload = update;
+
+return msg;

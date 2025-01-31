@@ -1,0 +1,40 @@
+var data = 
+[
+    {
+    "id":0,
+	"DNUM":123,
+	"CH":12,
+	"WEEK":"월화수목금토일",
+	"ONTIME":{h:11,m:30},
+	"OFFTIME":{h:12,m:22},
+	"ONSTATE":0,
+	"OFFSTATE":1,
+	"DEL":0
+    },
+    {
+    "id":1,
+	"DNUM":123,
+	"CH":12,
+	"WEEK":"월화수",
+	"ONTIME":{h:12,m:30},
+	"OFFTIME":{h:13,m:22},
+	"ONSTATE":-1,
+	"OFFSTATE":2,
+	"DEL":0
+    },
+    {
+        "id":2,
+	"DNUM":123,
+	"CH":12,
+	"WEEK":"금토일",
+	"ONTIME":{h:13,m:30},
+	"OFFTIME":{h:14,m:22},
+	"ONSTATE":1,
+	"OFFSTATE":2,
+	"DEL":0
+    }
+    
+    
+]
+msg.payload = data;
+return msg;

@@ -1,0 +1,75 @@
+//입력한 데이터를 전역변수에 기록한다!
+var nockanda_data = global.get("nockanda_data");
+//없으면 비어있는 값으로 하나 만들어둔다
+if(nockanda_data == null){
+   global.set("nockanda_data",[]); //비어있는 배열구조로 만듦!
+   nockanda_data = global.get("nockanda_data");
+}
+
+//전역변수로 지정된 id count값을 가지고온다
+//최초로 이 코드가 돌아갔을때는 count값이 없다!
+//그러면 만들어주면 된다!
+var count = global.get("id_count");
+
+if(count == null){
+    count = 0;
+}
+
+var update = {};
+update.command = "updateOrAddData";
+update.arguments = [];
+        
+var argu = [];
+
+var mydata = {};
+mydata.id = count;
+mydata.DNUM = msg.payload.DNUM;
+mydata.CH = msg.payload.CH;
+mydata.WEEK = msg.payload.WEEK;
+mydata.ONTIME = {h:msg.payload.ONTIME_h,m:msg.payload.ONTIME_m};
+mydata.OFFTIME = {h:msg.payload.OFFTIME_h,m:msg.payload.OFFTIME_m};
+mydata.DEL = 0;
+
+//이녀석들의 초기값이 무엇이어야 하겠느냐?
+var now = new Date();
+var day = ["일","월","화","수","목","금","토","일"];
+
+mydata.ONSTATE = 0; 
+mydata.OFFSTATE = 0;
+//만약 입력했을 당시의 요일중에 오늘요일이 포함이 되지 않는다면 초기값이 -1이다
+//입력한 시간값이 현재시간보다 과거라면 오늘안에 체크될 여지가 전혀 없으므로 -1로 처리한다
+if(mydata.WEEK.indexOf(day[now.getDay()]) == -1){
+   mydata.ONSTATE = -1; 
+   mydata.OFFSTATE = -1;
+}
+if(mydata.ONTIME.h < now.getHours()){
+   //아주 확실히 과거   
+   mydata.ONSTATE = -1; 
+}
+if(mydata.ONTIME.h == now.getHours()){
+   if(mydata.ONTIME.m < now.getMinutes()){  
+       mydata.ONSTATE = -1; 
+   } 
+}
+if(mydata.OFFTIME.h < now.getHours()){
+   //아주 확실히 과거   
+   mydata.OFFSTATE = -1; 
+}
+if(mydata.OFFTIME.h == now.getHours()){
+   if(mydata.OFFTIME.m < now.getMinutes()){  
+       mydata.OFFSTATE = -1; 
+   } 
+}
+
+//전역변수에 기록한다(전역변수가 list이다)
+nockanda_data.push(mydata);
+
+argu.push(mydata);
+update.arguments.push(argu);
+ //할거다한 위치
+ count++;
+ //전역변수에 다시 저장~
+ global.set("id_count",count);
+msg.payload = update;
+
+return msg;

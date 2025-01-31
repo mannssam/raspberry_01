@@ -1,0 +1,26 @@
+//전역변수에 들어있는 녀석도 삭제해줘야한다!
+var nockanda_data = global.get("nockanda_data");
+
+if(nockanda_data == null || nockanda_data.length == 0){
+  return null;
+}
+
+
+//전역변수를 순회하면서 레코드번호가 msg.row와 일치한것을 찾아야한다
+for(var i = 0;i<nockanda_data.length;i++){
+   if(nockanda_data[i].id == msg.payload.id){
+       //해당 레코드 삭제
+       nockanda_data.splice(i,1);//i번째 레코드에 해당되는 한녀석을 지워라!
+       break;
+   }
+}
+
+//var update = {};
+//update.command = "deleteRow";
+//update.arguments = [];
+
+//update.arguments.push(msg.payload.id);
+
+
+msg.payload = "123";
+return msg;

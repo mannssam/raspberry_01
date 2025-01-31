@@ -1,0 +1,3 @@
+var data = {payload:msg.payload};
+
+return data;

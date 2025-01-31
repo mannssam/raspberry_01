@@ -1,0 +1,41 @@
+//전역변수의 값을 가지고온다
+var nockanda_data = global.get("nockanda_data");
+
+if(nockanda_data == null || nockanda_data.length == 0){
+   //데이터가 없는경우
+   //여기서부터 아래쪽은 실행하지 않고 종료한다!
+   return null;
+}
+
+//새로운 전역변수 이전요일을 저장한다
+var pre_day = global.get("day");
+var day = new Date().getDay();
+
+if(pre_day != day){
+   //요일이 넘어간 경우이다!
+
+   var update = {};
+update.command = "updateOrAddData";
+update.arguments = [];
+var argu = [];
+//전체 갯수만큼 루프를 회전한다
+for(var i = 0;i<nockanda_data.length;i++){
+    nockanda_data[i].ONSTATE = 0;
+    nockanda_data[i].OFFSTATE = 0;
+    
+     var mydata = {};
+     mydata.id = nockanda_data[i].id;
+
+     //요일체크를 일단 해야한느데 그대로둔다
+     mydata.ONSTATE = 0; 
+     mydata.OFFSTATE = 0; 
+     argu.push(mydata);
+}
+update.arguments.push(argu);
+msg.payload = update;
+
+return msg;
+
+}
+
+global.set("day",day);

@@ -1,0 +1,31 @@
+//전역변수의 값을 가지고온다
+var nockanda_data = global.get("nockanda_data");
+
+if(nockanda_data == null || nockanda_data.length == 0){
+   //데이터가 없는경우
+   //여기서부터 아래쪽은 실행하지 않고 종료한다!
+   return null;
+}
+
+//전역변수에 들어있는 스케쥴목록중에 어떤녀석이 해당되는 녀석인가?
+for(var i = 0;i<nockanda_data.length;i++){
+   if(nockanda_data[i].id == msg.payload.id){
+      nockanda_data[i].ONSTATE = 1;
+      nockanda_data[i].OFFSTATE = 1;
+      break;
+   }
+}
+
+var update = {};
+update.command = "updateOrAddData";
+update.arguments = [];
+var argu = [];
+     var mydata = {};
+     mydata.id = msg.payload.id;
+     mydata.ONSTATE = 1;
+     mydata.OFFSTATE = 1;
+     argu.push(mydata);
+update.arguments.push(argu);
+msg.payload = update;
+
+return msg;

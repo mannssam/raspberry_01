@@ -1,0 +1,37 @@
+//msg.payload 안에 모든 자료가 들어있는상황
+
+//현재 데이터를 기준으로 전역적으로 설정해야하는 id값을 알아내야한다
+global.set("id_count",msg.payload.length);
+
+var now = new Date();
+var day = ["일","월","화","수","목","금","토","일"]
+
+for(var i = 0;i<msg.payload.length;i++){
+    msg.payload[i].ONSTATE = 0;
+    msg.payload[i].OFFSTATE = 0;
+
+if(msg.payload[i].WEEK.indexOf(day[now.getDay()]) == -1){
+   msg.payload[i].ONSTATE = -1; 
+   msg.payload[i].OFFSTATE = -1;
+}
+if(msg.payload[i].ONTIME.h < now.getHours()){
+   //아주 확실히 과거   
+   msg.payload[i].ONSTATE = -1; 
+}
+if(msg.payload[i].ONTIME.h == now.getHours()){
+   if(msg.payload[i].ONTIME.m < now.getMinutes()){  
+       msg.payload[i].ONSTATE = -1; 
+   } 
+}
+if(msg.payload[i].OFFTIME.h < now.getHours()){
+   //아주 확실히 과거   
+   msg.payload[i].OFFSTATE = -1; 
+}
+if(msg.payload[i].OFFTIME.h == now.getHours()){
+   if(msg.payload[i].OFFTIME.m < now.getMinutes()){  
+       msg.payload[i].OFFSTATE = -1; 
+   } 
+}
+}
+
+return msg;

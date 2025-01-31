@@ -1,0 +1,91 @@
+//전역변수의 값을 가지고온다
+var nockanda_data = global.get("nockanda_data");
+
+if(nockanda_data == null || nockanda_data.length == 0){
+   //데이터가 없는경우
+   //여기서부터 아래쪽은 실행하지 않고 종료한다!
+   return null;
+}
+
+//현재 시간을 가지고온다!
+var now = new Date();
+//.getDay(); 요일
+//.getHours() 시간
+//.getMinutes()분
+var day = ["일","월","화","수","목","금","토","일"];
+
+//전체 갯수만큼 루프를 회전한다
+for(var i = 0;i<nockanda_data.length;i++){
+   //i번째 레코드를 검사한다!
+   //nockanda_data[i]
+
+   //오늘의 요일을 체크한다
+   if(nockanda_data[i].WEEK.indexOf(day[now.getDay()]) == -1){
+       //전역변수에 기록되어있는 WEEK에 오늘의 요일이 포함되어 있지 않는 경우
+       continue;
+   }
+   
+
+   if(nockanda_data[i].ONTIME.h == now.getHours() && nockanda_data[i].ONTIME.m == now.getMinutes() && nockanda_data[i].ONSTATE == 0){
+       //스케쥴 체크가 되는지점!
+       nockanda_data[i].ONSTATE = 1;
+       //체크를 했으니 반환값을 만든다 = 테이블을 업데이트한다
+       
+       var update = {};
+       update.command = "updateOrAddData";
+       update.arguments = [];
+        
+       var argu = [];
+
+       var mydata = {};
+       mydata.id = nockanda_data[i].id;
+       mydata.ONSTATE = 1; 
+ 
+       argu.push(mydata);
+       update.arguments.push(argu);
+       msg.payload = update;
+
+       //MQTT메시지를 전송하는 부분(나중에 진짜로 되도록 하고)
+       var mqtt = { 
+            topic:"nockanda/"+nockanda_data[i].DNUM,
+            payload:{
+                       id:nockanda_data[i].id,
+                       dnum:nockanda_data[i].DNUM,
+                       ch:nockanda_data[i].CH*1,
+                       state:1
+            }
+        };
+
+       return [msg,mqtt];
+   }else if(nockanda_data[i].OFFTIME.h == now.getHours() && nockanda_data[i].OFFTIME.m == now.getMinutes() && nockanda_data[i].OFFSTATE == 0){
+       //스케쥴 체크가 되는지점!
+       nockanda_data[i].OFFSTATE = 1;
+       //체크를 했으니 반환값을 만든다 = 테이블을 업데이트한다
+       
+       var update2 = {};
+       update2.command = "updateOrAddData";
+       update2.arguments = [];
+        
+       var argu2 = [];
+
+       var mydata2 = {};
+       mydata2.id = nockanda_data[i].id;
+       mydata2.OFFSTATE = 1; 
+ 
+       argu2.push(mydata2);
+       update2.arguments.push(argu2);
+       msg.payload = update2;
+
+       //MQTT메시지를 전송하는 부분(나중에 진짜로 되도록 하고)
+       var mqtt2 = { 
+            topic:"nockanda/"+nockanda_data[i].DNUM,
+            payload:{
+                       id:nockanda_data[i].id,
+                       dnum:nockanda_data[i].DNUM,
+                       ch:nockanda_data[i].CH*1,
+                       state:0
+            }
+        };
+       return [msg,mqtt2];
+   }
+}

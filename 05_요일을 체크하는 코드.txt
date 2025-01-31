@@ -1,0 +1,13 @@
+var sample1 = "월화수목";
+var sample2 = "토일";
+
+var day = ["일","월","화","수","목","금","토","일"];
+var now = new Date().getDay();
+if(sample1.indexOf("일") != -1){
+   msg.payload = "포함된다";
+}else{
+   msg.payload = "포함되지 않는다";
+}
+
+//msg.payload = ;
+return msg;

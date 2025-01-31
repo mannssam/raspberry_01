@@ -1,0 +1,41 @@
+//입력한 데이터를 전역변수에 기록한다!
+var nockanda_data = global.get("nockanda_data");
+//없으면 비어있는 값으로 하나 만들어둔다
+if(nockanda_data == null){
+   global.set("nockanda_data",[]); //비어있는 배열구조로 만듦!
+   nockanda_data = global.get("nockanda_data");
+}
+
+for(var i = 0;i<nockanda_data.length;i++){
+   if(nockanda_data[i].id == msg.payload.id){
+       //~~~할거하고
+
+var update = {};
+update.command = "updateOrAddData";
+update.arguments = [];
+        
+var argu = [];
+
+var mydata = {};
+mydata.id = nockanda_data[i].id;
+mydata.ONSTATE = 1; 
+nockanda_data[i].ONSTATE = 1;
+
+argu.push(mydata);
+update.arguments.push(argu);
+msg.payload = update;
+
+var mqtt = {
+    topic:"nockanda/"+nockanda_data[i].DNUM,
+            payload:{
+                       id:nockanda_data[i].id,
+                       ch:nockanda_data[i].CH*1,
+                       state:1
+            }
+};
+
+return [msg,mqtt];
+
+   }
+}
+

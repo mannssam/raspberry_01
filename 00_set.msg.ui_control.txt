@@ -1,0 +1,94 @@
+{
+    "tabulator": {
+        "groupBy": "DNUM",
+        "columns": [
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "디바이스번호",
+                "field": "DNUM",
+                "width": 80,
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "채널번호",
+                "field": "CH",
+                "width": 80,
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "요일",
+                "field": "WEEK",
+                "width": 80,
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "켜지는시간",
+                "field": "ONTIME",
+                "width": 60,
+                "formatter": "function(cell, formatterParams, onRendered){return cell.getValue().h + ':' + cell.getValue().m;}",
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "꺼지는시간",
+                "field": "OFFTIME",
+                "width": 60,
+                "formatter": "function(cell, formatterParams, onRendered){return cell.getValue().h + ':' + cell.getValue().m;}",
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "켜짐상태",
+                "field": "ONSTATE",
+                "width": 20,
+                "formatter": "function(cell, formatterParams, onRendered){if(cell.getValue()==0){return \"<i class=\\\"fa fa-spinner fa-pulse fa-fw\\\"></i>\";}else if(cell.getValue()==1){return \"<i class=\\\"fa fa-check-square\\\"></i>\";}else if(cell.getValue()==-1){return \"<i class=\\\"fa fa-window-close\\\"></i>\";}else if(cell.getValue()==2){return \"<i class=\\\"fa fa-thumbs-o-up\\\"></i>\";}}",
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "꺼짐상태",
+                "field": "OFFSTATE",
+                "width": 20,
+                "formatter": "function(cell, formatterParams, onRendered){if(cell.getValue()==0){return \"<i class=\\\"fa fa-spinner fa-pulse fa-fw\\\"></i>\";}else if(cell.getValue()==1){return \"<i class=\\\"fa fa-check-square\\\"></i>\";}else if(cell.getValue()==-1){return \"<i class=\\\"fa fa-window-close\\\"></i>\";}else if(cell.getValue()==2){return \"<i class=\\\"fa fa-thumbs-o-up\\\"></i>\";}}",
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "비활성",
+                "field": "disable",
+                "width": 20,
+                "formatter": "function(cell, formatterParams, onRendered){return \"<i class=\\\"fa fa-thumbs-o-down\\\"></i>\";}",
+                "align": "center"
+            },
+            {
+                "formatterParams": {
+                    "target": "_blank"
+                },
+                "title": "삭제",
+                "field": "DEL",
+                "width": 20,
+                "formatter": "function(cell, formatterParams, onRendered){return \"<i class=\\\"fa fa-trash\\\"></i>\";}",
+                "align": "center"
+            }
+        ]
+    }
+}

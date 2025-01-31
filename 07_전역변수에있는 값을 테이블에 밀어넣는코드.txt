@@ -1,0 +1,32 @@
+//전역변수의 값을 가지고온다
+var nockanda_data = global.get("nockanda_data");
+
+if(nockanda_data == null || nockanda_data.length == 0){
+   //데이터가 없는경우
+   //여기서부터 아래쪽은 실행하지 않고 종료한다!
+   return null;
+}
+
+
+   var update = {};
+update.command = "updateOrAddData";
+update.arguments = [];
+var argu = [];
+//전체 갯수만큼 루프를 회전한다
+for(var i = 0;i<nockanda_data.length;i++){
+     var mydata = {};
+     mydata.id = nockanda_data[i].id;
+     mydata.DNUM = nockanda_data[i].DNUM;
+     mydata.CH = nockanda_data[i].CH;
+     mydata.WEEK = nockanda_data[i].WEEK;
+     mydata.ONTIME = nockanda_data[i].ONTIME;
+     mydata.OFFTIME = nockanda_data[i].OFFTIME;
+     mydata.DEL = nockanda_data[i].DEL;
+     mydata.ONSTATE = nockanda_data[i].ONSTATE;
+     mydata.OFFSTATE = nockanda_data[i].OFFSTATE;
+     argu.push(mydata);
+}
+update.arguments.push(argu);
+msg.payload = update;
+
+return msg;
